@@ -10,6 +10,19 @@ class ProductProvider extends ChangeNotifier {
   //-----getter for product list
   List<ProductModel> get products => _products;
 
+  //-----getter for related product list
+  List<ProductModel> get relatedProducts {
+    List<ProductModel> temp = [];
+    //----------filter the product list
+    //---------remove the already selected product
+    for (var i = 0; i < _products.length; i++) {
+      if (_products[i].productId != _productModel.productId) {
+        temp.add(_products[i]);
+      }
+    }
+    return temp;
+  }
+
   //-----product controller instance
   final ProductController _productController = ProductController();
 
@@ -63,5 +76,17 @@ class ProductProvider extends ChangeNotifier {
       _favproducts.add(model);
       notifyListeners();
     }
+  }
+
+  //------------Product details screen
+  //------------Store the selected product model
+  late ProductModel _productModel;
+  //--------get selected product
+  ProductModel get productModel => _productModel;
+
+  //-------set product model when click from the product card
+  void setProduct(ProductModel model) {
+    _productModel = model;
+    notifyListeners();
   }
 }

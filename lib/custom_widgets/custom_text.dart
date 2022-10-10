@@ -9,6 +9,7 @@ class CustomText extends StatelessWidget {
     this.fontSize = 15.0,
     this.fontWeight,
     this.color,
+    this.overflow,
   }) : super(key: key);
 
   final String text;
@@ -16,6 +17,7 @@ class CustomText extends StatelessWidget {
   final double fontSize;
   final FontWeight? fontWeight;
   final Color? color;
+  final TextOverflow? overflow;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class CustomText extends StatelessWidget {
         fontWeight: fontWeight,
         color: color,
       ),
+      overflow: overflow,
     );
   }
 }

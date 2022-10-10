@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: isLoading,
-      child: InkWell(
+      child: GestureDetector(
         onTap: onTap,
         child: Container(
           alignment: Alignment.center,

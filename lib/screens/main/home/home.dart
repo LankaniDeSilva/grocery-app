@@ -1,12 +1,11 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grocery_app/controllers/auth_controller.dart';
 import 'package:grocery_app/custom_widgets/custom_text.dart';
+import 'package:grocery_app/screens/main/cart/cart.dart';
 import 'package:grocery_app/utils/assets_constants.dart';
+import 'package:grocery_app/utils/util_function.dart';
 
 import '../../../utils/app_colors.dart';
 import 'widgets/products_grid.dart';
@@ -32,7 +31,10 @@ class _HomeState extends State<Home> {
                 SvgPicture.asset(AssetsContants.menuIcon),
                 Row(
                   children: [
-                    SvgPicture.asset(AssetsContants.cartIcon),
+                    IconButton(
+                        onPressed: () =>
+                            UtilFunction.navigator(context, const Cart()),
+                        icon: SvgPicture.asset(AssetsContants.cartIcon)),
                     IconButton(
                         onPressed: () {
                           AuthController().signoutUser();
