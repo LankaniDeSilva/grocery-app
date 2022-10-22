@@ -1,6 +1,8 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/controllers/product_controller.dart';
 import 'package:grocery_app/models/objects.dart';
+import 'package:grocery_app/utils/alert_helper.dart';
 import 'package:logger/logger.dart';
 
 class ProductProvider extends ChangeNotifier {
@@ -65,15 +67,21 @@ class ProductProvider extends ChangeNotifier {
   //-----getter for product list
   List<ProductModel> get favproducts => _favproducts;
 
-  void initAddtoFavourite(ProductModel model) {
+  void initAddtoFavourite(ProductModel model, BuildContext context) {
     //-------check wheather favourite list already has the object
     if (favproducts.contains(model)) {
       //--remove favourite from the list
       _favproducts.remove(model);
+      //---------show snackbar
+      AlertHelper.showSnackbar(
+          "Removed from favourite !", AnimatedSnackBarType.error, context);
       notifyListeners();
     } else {
       //--adding click favourite to the list
       _favproducts.add(model);
+      AlertHelper.showSnackbar(
+          "Added to favourite !", AnimatedSnackBarType.success, context);
+      notifyListeners();
       notifyListeners();
     }
   }

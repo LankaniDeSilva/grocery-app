@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:grocery_app/controllers/common_upload_controller.dart';
 import 'package:logger/logger.dart';
 import "package:path/path.dart";
 
@@ -29,7 +30,7 @@ class AdminController {
   ) async {
     try {
       //------uploading the image file
-      UploadTask? task = uploadFile(img);
+      UploadTask? task = FileUploadController.uploadFile(img, 'productImages');
 
       final snapshot = await task!.whenComplete(() {});
 
@@ -52,24 +53,24 @@ class AdminController {
     }
   }
 
-  //---------upload pick image file to the firebase storage bucket and return the download link
-  UploadTask? uploadFile(File file) {
-    try {
-      //---------getting the file name from the file path
-      final String fileName = basename(file.path);
+  // //---------upload pick image file to the firebase storage bucket and return the download link
+  // UploadTask? uploadFile(File file) {
+  //   try {
+  //     //---------getting the file name from the file path
+  //     final String fileName = basename(file.path);
 
-      //--------defining the file storage destination in the firebase storage
-      final String destination = 'productImages/$fileName';
+  //     //--------defining the file storage destination in the firebase storage
+  //     final String destination = 'productImages/$fileName';
 
-      //--------creating the firebase storage instance with the destination file location
-      final ref = FirebaseStorage.instance.ref(destination);
+  //     //--------creating the firebase storage instance with the destination file location
+  //     final ref = FirebaseStorage.instance.ref(destination);
 
-      final task = ref.putFile(file);
+  //     final task = ref.putFile(file);
 
-      return task;
-    } catch (e) {
-      Logger().e(e);
-      return null;
-    }
-  }
+  //     return task;
+  //   } catch (e) {
+  //     Logger().e(e);
+  //     return null;
+  //   }
+  // }
 }

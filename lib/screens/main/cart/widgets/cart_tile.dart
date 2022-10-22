@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_app/custom_widgets/custom_text.dart';
+import 'package:grocery_app/models/objects.dart';
+import 'package:grocery_app/providers/cart/cart_provider.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:grocery_app/utils/assets_constants.dart';
 import 'package:grocery_app/utils/size_config.dart';
+import 'package:provider/provider.dart';
 
 class CardTile extends StatefulWidget {
-  const CardTile({Key? key}) : super(key: key);
+  const CardTile({Key? key, required this.model}) : super(key: key);
+
+  final CartItemModel model;
 
   @override
   State<CardTile> createState() => _CardTileState();
@@ -38,7 +43,7 @@ class _CardTileState extends State<CardTile> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.network(
-                  AssetsContants.dummyImagePath,
+                  widget.model.model.image,
                   width: 70,
                   height: 70,
                   fit: BoxFit.fill,
@@ -49,20 +54,29 @@ class _CardTileState extends State<CardTile> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CustomText(
-                    text: "Pumpkin",
+                  CustomText(
+                    text: widget.model.model.productName,
                     fontSize: 14,
                   ),
                   Row(
-                    children: const [
-                      Icon(Icons.add),
-                      SizedBox(width: 15),
+                    children: [
+                      InkWell(
+                          onTap: () =>
+                              Provider.of<CartProvider>(context, listen: false)
+                                  .increasecartItemCount(widget.model.model),
+                          child: const Icon(Icons.add)),
+                      const SizedBox(width: 15),
                       CustomText(
-                        text: '1',
+                        text: widget.model.qty.toString(),
                         fontSize: 14,
                       ),
-                      SizedBox(width: 15),
-                      Icon(Icons.remove),
+                      const SizedBox(width: 15),
+                      InkWell(
+                          onTap: () =>
+                              Provider.of<CartProvider>(context, listen: false)
+                                  .decreasecartItemCount(
+                                      widget.model.model, context),
+                          child: const Icon(Icons.remove)),
                     ],
                   ),
                 ],
@@ -72,13 +86,17 @@ class _CardTileState extends State<CardTile> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: const [
-              Icon(
-                Icons.close,
-                color: AppColors.KRed,
+            children: [
+              InkWell(
+                onTap: () => Provider.of<CartProvider>(context, listen: false)
+                    .removeCartItem(widget.model.model.productId, context),
+                child: const Icon(
+                  Icons.close,
+                  color: AppColors.KRed,
+                ),
               ),
               CustomText(
-                text: 'Rs.152',
+                text: 'Rs.${widget.model.subTotal}0',
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               )

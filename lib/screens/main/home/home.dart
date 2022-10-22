@@ -1,7 +1,9 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grocery_app/controllers/auth_controller.dart';
+import 'package:grocery_app/custom_widgets/cart_button.dart';
 import 'package:grocery_app/custom_widgets/custom_text.dart';
 import 'package:grocery_app/screens/main/cart/cart.dart';
 import 'package:grocery_app/utils/assets_constants.dart';
@@ -31,10 +33,7 @@ class _HomeState extends State<Home> {
                 SvgPicture.asset(AssetsContants.menuIcon),
                 Row(
                   children: [
-                    IconButton(
-                        onPressed: () =>
-                            UtilFunction.navigator(context, const Cart()),
-                        icon: SvgPicture.asset(AssetsContants.cartIcon)),
+                    const CartButtonWidget(),
                     IconButton(
                         onPressed: () {
                           AuthController().signoutUser();

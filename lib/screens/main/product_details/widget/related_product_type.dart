@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../custom_widgets/custom_text.dart';
 import '../../../../models/objects.dart';
 
+import '../../../../providers/cart/cart_provider.dart';
+import '../../../../providers/home/product_provider.dart';
 import '../../../../utils/app_colors.dart';
 
 class RelatedProductTile extends StatelessWidget {
@@ -18,10 +21,11 @@ class RelatedProductTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         //---set the selected product model before navigating to the product details screen
-        // Provider.of<ProductProvider>(context, listen: false)
-        //     .setProduct(productModel);
-        // //----------navigate to product details screen
-        // UtilFunction.navigator(context, const ProductDetails());
+        Provider.of<ProductProvider>(context, listen: false)
+            .setProduct(productModel);
+
+        //------clear the product counter before go to the details screen
+        Provider.of<CartProvider>(context, listen: false).clearCounter();
       },
       child: Container(
         width: 100,

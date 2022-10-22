@@ -3,10 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:grocery_app/screens/main/favourite/fav.dart';
 import 'package:grocery_app/screens/main/home/home.dart';
 import 'package:grocery_app/screens/main/profile/profile.dart';
-import 'package:grocery_app/screens/main/search/search.dart';
 import 'package:grocery_app/utils/app_colors.dart';
 import 'package:grocery_app/utils/assets_constants.dart';
-import 'package:logger/logger.dart';
+
+import 'orders/oders.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _MainScreenState extends State<MainScreen> {
     _screens.addAll({
       const Home(),
       const Favourite(),
-      const Search(),
+      const Orders(),
       const Profile(),
     });
     super.initState();
@@ -69,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
             InkWell(
               child: SvgPicture.asset(
-                AssetsContants.searchIcon,
+                AssetsContants.menuIcon,
                 color: index == 2 ? AppColors.primaryColor : AppColors.kAsh,
               ),
               onTap: () {

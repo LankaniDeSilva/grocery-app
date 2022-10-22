@@ -4,7 +4,9 @@ class AssetsContants {
   //-----------dumhmy image path
   static const dummyImagePath =
       'https://img.freepik.com/free-photo/healthy-vegetables-wooden-table_1150-38014.jpg?w=2000';
-
+  //-------place holder profile image
+  static const profileimgurl =
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png';
   // main path
   static const imagePath = 'assets/images/';
   static const iconPath = 'assets/icons/';

@@ -2,11 +2,12 @@ part of "objects.dart";
 
 @JsonSerializable()
 class UserModel {
-  final String name;
-  final String email;
-  final String uid;
+  String name;
+  String email;
+  String uid;
+  String img;
 
-  UserModel(this.uid, this.name, this.email);
+  UserModel(this.uid, this.name, this.email, this.img);
   //-------bind json data to user model
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

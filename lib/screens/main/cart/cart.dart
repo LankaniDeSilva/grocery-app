@@ -4,8 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:grocery_app/custom_widgets/back_btn.dart';
 import 'package:grocery_app/custom_widgets/custom-button.dart';
+import 'package:grocery_app/providers/cart/cart_provider.dart';
+import 'package:grocery_app/providers/order_provider/order_provider.dart';
 import 'package:grocery_app/screens/main/cart/widgets/cart_tile.dart';
 import 'package:grocery_app/utils/assets_constants.dart';
+import 'package:provider/provider.dart';
 
 import '../../../custom_widgets/custom_text.dart';
 import '../../../utils/app_colors.dart';
@@ -43,14 +46,20 @@ class _CartState extends State<Cart> {
               ],
             ),
             Expanded(
-              child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return const CardTile();
-                  },
-                  separatorBuilder: (context, index) => const SizedBox(
-                        height: 20,
-                      ),
-                  itemCount: 10),
+              child: Consumer<CartProvider>(
+                builder: (context, value, child) {
+                  return value.cartItemList.isEmpty
+                      ? const CustomText(text: "No Cart Items")
+                      : ListView.separated(
+                          itemBuilder: (context, index) {
+                            return CardTile(model: value.cartItemList[index]);
+                          },
+                          separatorBuilder: (context, index) => const SizedBox(
+                                height: 20,
+                              ),
+                          itemCount: value.cartItemList.length);
+                },
+              ),
             )
           ],
         ),
@@ -60,49 +69,46 @@ class _CartState extends State<Cart> {
         width: SizeConfig.getWidth(context),
         padding: const EdgeInsets.symmetric(horizontal: 30),
         color: AppColors.kWhite,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CartAmountRow(
-              text: 'Item total',
-              amount: '20.49',
-            ),
-            const CartAmountRow(
-              text: 'Discount',
-              amount: '-10',
-            ),
-            const CartAmountRow(
-              text: 'Tax',
-              amount: '2',
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                CustomText(
-                  text: 'Total',
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+        child: Consumer<CartProvider>(
+          builder: (context, value, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CartAmountRow(
+                  text: 'Total Item Count',
+                  amount: value.getCartTotalItemCount.toString(),
                 ),
-                CustomText(
-                  text: 'Rs.1200',
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+                const CartAmountRow(
+                  text: 'Tax',
+                  amount: 'Rs.0.00',
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CustomText(
+                      text: 'Total',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    CustomText(
+                      text: 'Rs.${value.getCartTotal}',
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                CustomButton(
+                  text: 'Place Order',
+                  isLoading: Provider.of<OrderProvider>(context).loading,
+                  onTap: () {
+                    Provider.of<OrderProvider>(context, listen: false)
+                        .createOrder(context);
+                  },
                 ),
               ],
-            ),
-            const SizedBox(height: 20),
-            CustomButton(
-              text: 'Place Order',
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const DialogBoxContainer();
-                  },
-                );
-              },
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -112,7 +118,10 @@ class _CartState extends State<Cart> {
 class DialogBoxContainer extends StatelessWidget {
   const DialogBoxContainer({
     Key? key,
+    required this.onTap,
   }) : super(key: key);
+
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -153,8 +162,9 @@ class DialogBoxContainer extends StatelessWidget {
                 ),
               ),
               Positioned(
-                  bottom: -20,
-                  child: CustomButton(text: 'See Order', onTap: () {}))
+                bottom: -20,
+                child: CustomButton(text: 'See Order', onTap: onTap),
+              )
             ],
           ),
         ],
@@ -185,7 +195,7 @@ class CartAmountRow extends StatelessWidget {
             fontSize: 14,
           ),
           CustomText(
-            text: 'Rs.${amount}',
+            text: 'Rs.$amount',
             fontSize: 14,
           ),
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grocery_app/custom_widgets/custom_text.dart';
 import 'package:grocery_app/models/objects.dart';
+import 'package:grocery_app/providers/cart/cart_provider.dart';
 import 'package:grocery_app/providers/home/product_provider.dart';
 import 'package:grocery_app/screens/main/product_details/product_details.dart';
 import 'package:grocery_app/utils/assets_constants.dart';
@@ -56,6 +57,10 @@ class ProductTile extends StatelessWidget {
         //---set the selected product model before navigating to the product details screen
         Provider.of<ProductProvider>(context, listen: false)
             .setProduct(productModel);
+
+        //------clear the product counter before go to the details screen
+        Provider.of<CartProvider>(context, listen: false).clearCounter();
+
         //----------navigate to product details screen
         UtilFunction.navigator(context, const ProductDetails());
       },
@@ -79,7 +84,7 @@ class ProductTile extends StatelessWidget {
               builder: (context, value, child) {
                 return InkWell(
                   onTap: () {
-                    value.initAddtoFavourite(productModel);
+                    value.initAddtoFavourite(productModel, context);
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 8.0, right: 8.0),

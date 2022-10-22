@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:grocery_app/custom_widgets/cart_button.dart';
 import 'package:grocery_app/custom_widgets/custom-button.dart';
 import 'package:grocery_app/custom_widgets/custom_text.dart';
 import 'package:grocery_app/models/objects.dart';
+import 'package:grocery_app/providers/cart/cart_provider.dart';
 import 'package:grocery_app/providers/home/product_provider.dart';
 import 'package:grocery_app/screens/main/product_details/widget/counter_section.dart';
 import 'package:grocery_app/screens/main/product_details/widget/related_product_type.dart';
@@ -128,9 +130,28 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                   ),
                   SafeArea(
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: CustomButton(text: "Add to Cart", onTap: () {})),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Consumer<ProductProvider>(
+                              builder: (context, value, child) {
+                                return CustomButton(
+                                  text: "Add to Cart",
+                                  onTap: () {
+                                    Provider.of<CartProvider>(context,
+                                            listen: false)
+                                        .addToCart(value.productModel, context);
+                                  },
+                                );
+                              },
+                            )),
+                        const SizedBox(width: 10),
+                        const CartButtonWidget()
+                      ],
+                    ),
                   )
                 ],
               ),

@@ -48,6 +48,8 @@ dependencies:
   json_annotation: ^4.7.0
   image_picker: ^0.8.5+3
   firebase_storage: ^10.3.10
+  animated_snack_bar: ^0.3.0
+  badges: ^2.0.3
   
   
 
